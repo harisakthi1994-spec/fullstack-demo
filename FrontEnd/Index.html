@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fullstack Demo</title>
+</head>
+<body>
+    <h1>Save Your Name</h1>
+
+    <input id="name" placeholder="Enter your name">
+    <button onclick="saveName()">Submit</button>
+
+    <p id="msg"></p>
+
+    <script>
+        async function saveName() {
+            const name = document.getElementById("name").value;
+
+            if (!name.trim()) {
+                alert("Enter a name!");
+                return;
+            }
+
+            document.getElementById("msg").innerText = "Submitting...";
+
+            try {
+                const res = await fetch("http://13.222.12.88:5000/save-name", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name })
+                });
+
+                const data = await res.json();
+                document.getElementById("msg").innerText = data.msg;
+
+            } catch (error) {
+                document.getElementById("msg").innerText = "❌ Failed to reach server";
+            }
+        }
+    </script>
+</body>
+</html>
